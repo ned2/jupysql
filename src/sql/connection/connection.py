@@ -1043,6 +1043,16 @@ class DBAPIConnection(AbstractConnection):
 
         return cur
 
+    def to_duckdb_relation(self, query):
+        """Create a DuckDB relation from the query
+
+        Parameters
+        ----------
+        query : str
+            SQL query
+        """
+        return self._connection.sql(query)
+
     def _get_database_information(self):
         return {
             "dialect": self.dialect,

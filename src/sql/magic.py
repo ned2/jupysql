@@ -112,6 +112,11 @@ class SqlMagic(Magics, Configurable):
         config=True,
         help="Return Polars DataFrames instead of regular result sets",
     )
+    autoduckdb = Bool(
+        default_value=False,
+        config=True,
+        help="Return DuckDB Relations instead of regular result sets",
+    )
     column_local_vars = Bool(
         default_value=False,
         config=True,

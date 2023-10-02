@@ -35,6 +35,10 @@ def run_statements(conn, sql, config, parameters=None):
         # postgres metacommand
         if first_word.startswith("\\") and is_postgres_or_redshift(conn.dialect):
             result = handle_postgres_special(conn, statement)
+            
+        # DuckDB relation output requested
+        elif config.autoduckdb:
+            result = conn.to_duckdb_relation(statement)
 
         # regular query
         else:
@@ -46,6 +50,9 @@ def run_statements(conn, sql, config, parameters=None):
                 and result.rowcount > 0
             ):
                 display.message_success(f"{result.rowcount} rows affected.")
+
+    if config.autoduckdb:
+        return result
 
     result_set = ResultSet(result, config, statement, conn)
     return select_df_type(result_set, config)
